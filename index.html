@@ -10,151 +10,101 @@
         <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
             <script type='text/javascript'>
         var initESW = function(gslbBaseURL) {
-        embedded_svc.settings.displayHelpButton = true; //Or false
-        embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
-        
-        embedded_svc.settings.defaultMinimizedText = 'Chat with Support'; //(Defaults to Chat with an Expert)
-        embedded_svc.settings.disabledMinimizedText = 'Support Offline'; //(Defaults to Agent Offline)
-        
-        embedded_svc.settings.loadingText = 'Loading...'; //(Defaults to Loading)
-        //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
-        
-        // Settings for Live Agent
-        embedded_svc.settings.avatarImgURL = '';
-        embedded_svc.settings.prechatBackgroundImgURL = '';
-        embedded_svc.settings.waitingStateBackgroundImgURL = '';
-        embedded_svc.settings.smallCompanyLogoImgURL = '';
-        //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
-        // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
-        //Returns a valid button ID.
-        //};
-        
-            embedded_svc.settings.enabledFeatures = ['LiveAgent'];
-            embedded_svc.settings.entryFeature = 'LiveAgent';
+            embedded_svc.settings.displayHelpButton = true; //Or false
+            embedded_svc.settings.language = 'en-US'; //For example, enter 'en' or 'en-US'
+            
+            embedded_svc.settings.defaultMinimizedText = 'Chat with Support'; //(Defaults to Chat with an Expert)
+            embedded_svc.settings.disabledMinimizedText = 'Chat Support Offline'; //(Defaults to Agent Offline)
+            
+            embedded_svc.settings.loadingText = 'Loading...'; //(Defaults to Loading)
+            //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+            
+            // Settings for Live Agent
+            //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+            // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+            //Returns a valid button ID.
+            //};
             //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
-
-            embedded_svc.settings.widgetWidth = '444px';
-            embedded_svc.settings.widgetHeight = '550px';
+            //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+            //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
             
-            /*Variable defined for Contact Mail*/
-            var mailId = '';
-            var contEmail = mailId;
-            if(mailId.indexOf("vmware.com")>=0) {
-                contEmail = "chat@vmware.com";
-            }
-            
-            /*Variables defined for details to be displayed only in the current detail page*/
-            var serviceName = 'VMware Cloud On AWS';
-            var caseRecType = 'GSS Technical Support';
-            var caseEnt = 'SaaS Production Support';
-            var caseProduct = 'VMware Cloud On AWS';
-			
-            
-            /*Variables defined for Case details*/
-            var caseOrigin = 'Chat';
-            var caseStatus = 'Open';
-            var caseSubStatus = 'Assigned';
-            var caseDesc = 'Case created from Chat';
-            var caseSubj = 'Case created from Chat';
-            var caseSupLev = '1';
-            var caseProbCat = 'VMware Cloud On AWS';
-            var caseSev = 'S2';
-            var caseEpBugNo = '12345';
-            var caseRecTypeId = '01280000000cYyhAAE';
-            var caseProId = '01t4B000001ZFAj';
-            var caseEntId = '5504B0000007g1w';
-            
-            /*Added service name and other details to be displayed in the current detail page*/
-            embedded_svc.settings.extraPrechatFormDetails = [
-                {"label": "Service Name", "value": serviceName, "displayToAgent": true},
-                {"label": "Case Record Type", "value": caseRecType, "displayToAgent": true},
-                {"label": "Case Entitlement", "value": caseEnt, "displayToAgent": true},
-                {"label": "Case Product", "value": caseProduct, "displayToAgent": true},
-                {"label": "Email Id", "value": contEmail, "displayToAgent": true},
-                {"label": "Case Origin", "value": caseOrigin, "displayToAgent": true},
-                {"label": "Case Status", "value": caseStatus, "displayToAgent": true},
-                {"label": "Case Sub Status", "value": caseSubStatus, "displayToAgent": true},
-                {"label": "Case Description", "value": caseDesc, "displayToAgent": true},
-                {"label": "Case Subject", "value": caseSubj, "displayToAgent": true},
-                {"label": "Case Support Level", "value": caseSupLev, "displayToAgent": true},
-                {"label": "Case Problem Category", "value": caseProbCat, "displayToAgent": true},
-                {"label": "Case Severity", "value": caseSev, "displayToAgent": true},
-                {"label": "Case EpbugNo", "value": caseEpBugNo, "displayToAgent": true,"transcriptFields":["Org_Id__c"] },
-                {"label": "Case RecordTypeId", "value": caseRecTypeId, "displayToAgent": false},
-                {"label": "Case ProductId", "value": caseProId, "displayToAgent": false},
-                {"label": "Case EntitlementId", "value": caseEntId, "displayToAgent": false},
-			   
-            ];
-            
-            /*Maps the value with Case fields and creates a Case and also links to chat based on whether contact is null, existing or a user*/
-            if(contEmail == '' || contEmail == null){
-                embedded_svc.settings.extraPrechatInfo = [{
-                "entityFieldMaps": [{
-                    "doCreate":false,
-                    "doFind":true,
-                    "fieldName":"Email",
-                    "isExactMatch":true,
-                    "label":"Email Id"
-                  }],
-                  "entityName":"Contact",
-                  "saveToTranscript": "ContactId",
-                  "linkToEntityName": "Case",
-                  "linkToEntityField": "ContactId"
-                },
-                {
-                    "entityFieldMaps": [
-                        {"doCreate": false,"doFind": false,"fieldName": "ContactEmail","isExactMatch": false,"label": "Email Id"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Origin","isExactMatch": false,"label": "Case Origin"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Status","isExactMatch": false,"label": "Case Status"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Sub_Status__c","isExactMatch": false,"label": "Case Sub Status"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Description","isExactMatch": false,"label": "Case Description"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Subject","isExactMatch": false,"label": "Case Subject"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Support_Level__c","isExactMatch": false,"label": "Case Support Level"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Problem_Category__c","isExactMatch": false,"label": "Case Problem Category"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Severity__c","isExactMatch": false,"label": "Case Severity"},
-                        {"doCreate": true,"doFind": false,"fieldName": "RecordTypeId","isExactMatch": false,"label": "Case RecordTypeId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "EntitlementId","isExactMatch": false,"label": "Case EntitlementId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "ProductId","isExactMatch": false,"label": "Case ProductId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "EP_Bug_No__c","isExactMatch": false,"label": "Case EpbugNo"
-                    }],
-                    "entityName": "Case",
-                    "saveToTranscript": "CaseId",
-                    "showOnCreate": true
-                }];
-            }
-            else
-            {
-                embedded_svc.settings.extraPrechatInfo = [{
-                    "entityFieldMaps": [
-                        {"doCreate":false, "doFind":true, "fieldName":"Email", "isExactMatch":true, "label":"Email Id"}
-                    ],
-                    "entityName":"Contact",
-                    "saveToTranscript": "ContactId",
-                    "linkToEntityName": "Case",
-                    "linkToEntityField": "ContactId",
-                    "showOnCreate": false
-                },
-                {
-                    "entityFieldMaps": [
-                        {"doCreate": false,"doFind": true,"fieldName": "ContactEmail","isExactMatch": true,"label": "Email Id"},
-                        {"doCreate": true,"doFind": true,"fieldName": "Origin","isExactMatch": false,"label": "Case Origin"},
-                        {"doCreate": true,"doFind": true,"fieldName": "Status","isExactMatch": false,"label": "Case Status"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Sub_Status__c","isExactMatch": false,"label": "Case Sub Status"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Description","isExactMatch": false,"label": "Case Description"},
-                        {"doCreate": true,"doFind": false,"fieldName": "Subject","isExactMatch": false,"label": "Case Subject"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Support_Level__c","isExactMatch": false,"label": "Case Support Level"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Problem_Category__c","isExactMatch": false,"label": "Case Problem Category"},
-                        {"doCreate": true,"doFind": false,"fieldName": "GSS_Severity__c","isExactMatch": false,"label": "Case Severity"},
-                        {"doCreate": true,"doFind": true,"fieldName": "RecordTypeId","isExactMatch": false,"label": "Case RecordTypeId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "EntitlementId","isExactMatch": false,"label": "Case EntitlementId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "ProductId","isExactMatch": false,"label": "Case ProductId"},
-                        {"doCreate": true,"doFind": false,"fieldName": "EP_Bug_No__c","isExactMatch": false,"label": "Case EpbugNo"
-                    }],
-                    "entityName": "Case",
-                    "saveToTranscript": "CaseId",
-                    "showOnCreate": true
-                }];
-            }
+                embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+                embedded_svc.settings.entryFeature = 'LiveAgent';
+                
+                
+                /*Variable defined for Contact Mail*/
+                //var mailId = '';
+                var mailId= 'testemailtemp3@gmail.com';
+                var contactfirstName = 'Prashant';
+                var contactlastName = 'Kumar';
+                var phoneNumber='1239874560';
+                var contEmail = mailId;
+                
+                
+                /*Variables defined for details to be displayed only in the current detail page*/
+                var caseRecType = 'GSS Technical Support';
+                var caseEnt = 'SPS';
+                var caseProduct = 'VMware Cloud On AWS';
+                
+                /*Variables defined for Case details*/
+                var caseOrigin = 'Portal Chat';
+                var caseStatus = 'Open';
+                var caseSubStatus = 'Assigned';
+                var caseDesc = 'Case created from Chat';
+                var caseSubj = 'Case created from Chat';
+                var caseSupLev = '1';
+                var caseProbCat = 'VMware Cloud On AWS';
+                var caseSev = 'S3';
+                var caseEANumber = '12345';
+                var caseRecTypeId = '01280000000cYyhAAE';
+                var dcaId='0018000000oliGDAAY';
+                
+                /*Added service name and other details to be displayed in the current detail page*/
+                embedded_svc.settings.extraPrechatFormDetails = [
+                    {"label": "Contact First Name", "value": contactfirstName, "displayToAgent": true,"transcriptFields":["Contact_Name__c"]},
+                    {"label": "Contact Last Name", "value": contactlastName, "displayToAgent": true},
+                    {"label": "Email Id", "value": contEmail, "displayToAgent": true,"transcriptFields":["Contact_Email__c"]},
+                    {"label": "Contact Phone Number", "value": phoneNumber, "displayToAgent": true},
+                    {"label": "Case Product", "value": caseProduct, "displayToAgent": true},
+                    {"label": "Case Severity", "value": caseSev, "displayToAgent": true},
+                    {"label": "Case Problem Category", "value": caseProbCat, "displayToAgent": true},
+                    {"label": "Case Entitlement", "value": caseEnt, "displayToAgent": true},
+                    {"label": "Case Support Level", "value": caseSupLev, "displayToAgent": true},
+                    {"label": "Case Record Type", "value": caseRecType, "displayToAgent": true},
+                    {"label": "Case Origin", "value": caseOrigin, "displayToAgent": true},
+                    {"label": "Case Status", "value": caseStatus, "displayToAgent": true},
+                    {"label": "Case Sub Status", "value": caseSubStatus, "displayToAgent": true},
+                    {"label": "Case Subject", "value": caseSubj, "displayToAgent": true},
+                    {"label": "Case Description", "value": caseDesc, "displayToAgent": true},
+                    {"label": "Case EA Number", "value": caseEANumber, "displayToAgent": true},
+                    {"label": "Case RecordTypeId", "value": caseRecTypeId, "displayToAgent": false},
+                    {"label": "DCA Account ID", "value": dcaId, "displayToAgent": false},
+                ];
+                
+                /*Maps the value with Case fields and creates a Case and also links to chat based on whether contact is null, existing or a user*/
+                if(contEmail != '' || contEmail != null){
+                    embedded_svc.settings.extraPrechatInfo = [{
+                        "entityFieldMaps": [
+                            {"doCreate":true, "doFind":true, "fieldName":"Email", "isExactMatch":true, "label":"Email Id"},
+                            {"doCreate":true, "doFind":false, "fieldName":"FirstName", "isExactMatch":true, "label":"Contact First Name"},
+                            {"doCreate":true, "doFind":false, "fieldName":"LastName", "isExactMatch":true, "label":"Contact Last Name"},
+                            {"doCreate":true, "doFind":false, "fieldName":"Phone", "isExactMatch":false, "label":"Contact Phone Number"},
+                            {"doCreate":true, "doFind":false, "fieldName":"AccountId", "isExactMatch":false, "label":"DCA Account ID"}
+                        ],
+                        "entityName":"Contact",
+                        "saveToTranscript": "ContactId",
+                        "showOnCreate": true
+                    },
+                    {
+                        "entityFieldMaps": [
+                            {"doCreate": false,"doFind": true,"fieldName": "ContactEmail","isExactMatch": true,"label": "Email Id"},
+                            {"doCreate": false,"doFind": true,"fieldName": "Origin","isExactMatch": false,"label": "Case Origin"},
+                            {"doCreate": false,"doFind": true,"fieldName": "Status","isExactMatch": false,"label": "Case Status"},
+                            {"doCreate": false,"doFind": true,"fieldName": "RecordTypeId","isExactMatch": false,"label": "Case RecordTypeId"}
+                        ],
+                        "entityName": "Case"
+                    }];
+                }
 
 embedded_svc.init('https://vmware--DEV3.cs67.my.salesforce.com', 'https://dev3-vmware.cs67.force.com/LiveAgent', gslbBaseURL, '00D0n0000000XOR', 'EPG', { baseLiveAgentContentURL: 'https://c.la1-c2cs-iad.salesforceliveagent.com/content', deploymentId: '5720n0000004CCM', buttonId: '5730n0000004CHC', baseLiveAgentURL: 'https://d.la1-c2cs-iad.salesforceliveagent.com/chat', eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I0n0000004C9hEAE_163b01cb121', isOfflineSupportEnabled: false}); };if (!window.embedded_svc) { var s = document.createElement('script'); s.setAttribute('src', 'https://vmware--DEV3.cs67.my.salesforce.com/embeddedservice/5.0/esw.min.js'); s.onload = function() { initESW(null); }; document.body.appendChild(s); } else { initESW('https://service.force.com'); }</script>
 
